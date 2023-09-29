@@ -58,7 +58,7 @@ pip install Flask Flask-Migrate flask-restx Flask-SQLAlchemy psycopg2-binary pyt
 
 ## Enviroments
 
-```json
+```txt
 FLASK_APP='main.py'
 FLASK_RUN_HOST=127.0.0.1
 FLASK_RUN_PORT=5000
@@ -74,3 +74,23 @@ DATABASE_URL='postgresql://user:password@localhost:5432/name_database'
   - [Swagger](https://flask-restx.readthedocs.io/en/latest/swagger.html)
 
 ## Comandos
+
+### Migraciones
+
+- Iniciar el paquete alembic (Una sola vez, siempre y cuando no exista la carpeta **migrations**)
+
+```ssh
+flask db init
+```
+
+- Crear una migración (Crea o se modifica un modelo, explicitamente en los campos)
+
+```ssh
+flask db migrate -m "comentario"
+```
+
+- Sincronizar las migraciones
+
+```ssh
+flask db upgrade
+```
