@@ -45,7 +45,7 @@
    - [] Proteger las rutas mediante autenticación
    - [] Proteger las rutas por rol
 6. Documentación y validaciones
-   - [] Swagger OpenAPI
+   - [x] Swagger OpenAPI
    - [] Schemas
 7. Despliegue
    - [] Render
@@ -58,7 +58,7 @@ pip install Flask Flask-Migrate flask-restx Flask-SQLAlchemy psycopg2-binary pyt
 
 ## Enviroments
 
-```txt
+```py
 FLASK_APP='main.py'
 FLASK_RUN_HOST=127.0.0.1
 FLASK_RUN_PORT=5000
@@ -70,7 +70,12 @@ DATABASE_URL='postgresql://user:password@localhost:5432/name_database'
 
 ## Documentación
 
+- SQLAlchemy
+  - [Metodos usados con el Modelo](https://docs.sqlalchemy.org/en/14/orm/query.html#sqlalchemy.orm.Query.all)
+  - [Tipo de datos](https://docs.sqlalchemy.org/en/14/core/types.html)
+  - [Metodos optimos (adicionales)](https://github.com/absent1706/sqlalchemy-mixins/blob/master/README.md)
 - FlaskRestX
+  - [Tipo de datos en validación](https://flask-restx.readthedocs.io/en/latest/_modules/flask_restx/fields.html)
   - [Swagger](https://flask-restx.readthedocs.io/en/latest/swagger.html)
 
 ## Comandos

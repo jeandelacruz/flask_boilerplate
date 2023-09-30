@@ -1,13 +1,17 @@
 from app import api
+from flask import request
 from flask_restx import Resource
 from http import HTTPStatus
 from app.controllers.roles_controller import RoleController
+from app.schemas.roles_schema import RoleRequestSchema
 
 role_ns = api.namespace(
     name='Roles',
     description='Rutas del modulo Roles',
     path='/roles'
 )
+
+schema_request = RoleRequestSchema(role_ns)
 
 
 # CRUD
@@ -17,11 +21,13 @@ class Roles(Resource):
     def get(self):
         ''' Listar todos los roles '''
         controller = RoleController()
-        return controller.all()
+        return controller.fetch_all()
 
+    @role_ns.expect(schema_request.create(), validate=True)
     def post(self):
         ''' Creación de un rol '''
-        return 'Creación de rol', HTTPStatus.CREATED
+        controller = RoleController()
+        return controller.save(request.json)
 
 
 @role_ns.route('/<int:id>')
