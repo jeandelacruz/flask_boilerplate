@@ -34,16 +34,16 @@ class Roles(Resource):
 class RoleById(Resource):
     def get(self, id):
         ''' Obtener un rol por su id '''
-        return f'Obtener {str(id)}', HTTPStatus.OK
+        controller = RoleController()
+        return controller.find_by_id(id)
 
-    def put(self, id):
-        ''' Actualizar un rol por su id, enviando el objeto completo '''
-        return f'Actualizar {str(id)}'
-
+    @role_ns.expect(schema_request.update(), validate=True)
     def patch(self, id):
         ''' Actualizar un rol por su id, enviando el objeto parcial '''
-        return f'Actualizar {str(id)}'
+        controller = RoleController()
+        return controller.update(id, request.json)
 
     def delete(self, id):
         ''' Inhabilitar un rol por su id '''
-        return f'Eliminar {str(id)}', HTTPStatus.OK
+        controller = RoleController()
+        return controller.remove(id)
