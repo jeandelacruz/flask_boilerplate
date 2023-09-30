@@ -37,16 +37,16 @@
    - [] Enviar un correo con un template (html)
 4. CRUD por cada Modelo
    - [] Listado con paginación
-   - [] Obtener un registro mediante el id
-   - [] Creación de un registro
-   - [] Actualización de un registro
-   - [] Eliminar un registro (SoftDelete)
+   - [x] Obtener un registro mediante el id
+   - [x] Creación de un registro
+   - [x] Actualización de un registro
+   - [x] Eliminar un registro (SoftDelete)
 5. Decoradores
    - [] Proteger las rutas mediante autenticación
    - [] Proteger las rutas por rol
 6. Documentación y validaciones
    - [x] Swagger OpenAPI
-   - [] Schemas
+   - [x] Schemas
 7. Despliegue
    - [] Render
 
