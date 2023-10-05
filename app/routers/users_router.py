@@ -1,5 +1,8 @@
 from app import api
 from flask_restx import Resource
+from flask import request
+from app.schemas.users_schema import UserRequestSchema
+from app.controllers.users_controller import UserController
 
 
 user_ns = api.namespace(
@@ -8,28 +11,37 @@ user_ns = api.namespace(
     path='/users'
 )
 
+schema_request = UserRequestSchema(user_ns)
+
 
 @user_ns.route('')
 class Users(Resource):
     def get(self):
         ''' Listar todos los usuarios '''
-        pass
+        controller = UserController()
+        return controller.fetch_all()
 
+    @user_ns.expect(schema_request.create(), validate=True)
     def post(self):
         ''' Creación de un usuario '''
-        pass
+        controller = UserController()
+        return controller.save(request.json)
 
 
 @user_ns.route('/<int:id>')
 class UserById(Resource):
     def get(self, id):
         ''' Obtener un usuario por su id '''
-        pass
+        controller = UserController()
+        return controller.find_by_id(id)
 
+    @user_ns.expect(schema_request.update(), validate=True)
     def patch(self, id):
         ''' Actualizar un usuario por su id, enviando el objeto parcial '''
-        pass
+        controller = UserController()
+        return controller.update(id, request.json)
 
     def delete(self, id):
         ''' Inhabilitar un usuario por su id '''
-        pass
+        controller = UserController()
+        return controller.remove(id)
