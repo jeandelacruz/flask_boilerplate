@@ -53,7 +53,7 @@
 ## PIP
 
 ```ssh
-pip install Flask Flask-Migrate flask-restx Flask-SQLAlchemy psycopg2-binary python-dotenv sqlalchemy-mixins autopep8 marshmallow-sqlalchemy
+pip install Flask Flask-Migrate flask-restx Flask-SQLAlchemy psycopg2-binary python-dotenv sqlalchemy-mixins autopep8 marshmallow-sqlalchemy bcrypt
 ```
 
 ## Enviroments

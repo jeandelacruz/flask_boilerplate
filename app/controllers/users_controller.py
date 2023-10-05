@@ -1,6 +1,7 @@
 from app import db
 from app.models.users_model import UserModel
 from app.schemas.users_schema import UserResponseSchema
+from http import HTTPStatus
 
 
 class UserController:
@@ -13,7 +14,23 @@ class UserController:
         pass
 
     def save(self, body):
-        pass
+        try:
+            record_new = self.model.create(**body)
+            record_new.hash_password()
+            self.db.session.add(record_new)
+            self.db.session.commit()
+
+            return {
+                'message': f'El usuario {body["username"]} se creo con exito'
+            }, HTTPStatus.CREATED
+        except Exception as e:
+            self.db.session.rollback()
+            return {
+                'message': 'Ocurrio un error',
+                'error': str(e)
+            }, HTTPStatus.INTERNAL_SERVER_ERROR
+        finally:
+            self.db.session.close()
 
     def find_by_id(self, id):
         pass
