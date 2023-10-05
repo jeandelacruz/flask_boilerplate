@@ -1,5 +1,5 @@
 from app import db
-from app.models.roles_models import RoleModel
+from app.models.roles_model import RoleModel
 from app.schemas.roles_schema import RoleResponseSchema
 from http import HTTPStatus
 

@@ -1,6 +1,6 @@
 from flask_restx import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
-from app.models.roles_models import RoleModel
+from app.models.roles_model import RoleModel
 
 
 class RoleRequestSchema:
