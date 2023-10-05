@@ -16,10 +16,12 @@ schema_request = UserRequestSchema(user_ns)
 
 @user_ns.route('')
 class Users(Resource):
+    @user_ns.expect(schema_request.all())
     def get(self):
         ''' Listar todos los usuarios '''
+        query_params = schema_request.all().parse_args()
         controller = UserController()
-        return controller.fetch_all()
+        return controller.fetch_all(query_params)
 
     @user_ns.expect(schema_request.create(), validate=True)
     def post(self):

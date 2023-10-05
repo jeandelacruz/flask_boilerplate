@@ -31,9 +31,9 @@
    - [] Creación del token de acceso (JWT | access_token - refresh_token)
    - [] Validación de contraseñas encriptadas (bcrypt)
 2. Registro
-   - [] Encriptación de contraseña (bcrypt)
+   - [x] Encriptación de contraseña (bcrypt)
 3. Recuperar Contraseña
-   - [] Generar una nueva contraseña encriptada
+   - [x] Generar una nueva contraseña encriptada
    - [] Enviar un correo con un template (html)
 4. CRUD por cada Modelo
    - [] Listado con paginación
