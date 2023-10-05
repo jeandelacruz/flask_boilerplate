@@ -36,7 +36,7 @@
    - [x] Generar una nueva contraseña encriptada
    - [] Enviar un correo con un template (html)
 4. CRUD por cada Modelo
-   - [] Listado con paginación
+   - [x] Listado con paginación
    - [x] Obtener un registro mediante el id
    - [x] Creación de un registro
    - [x] Actualización de un registro
