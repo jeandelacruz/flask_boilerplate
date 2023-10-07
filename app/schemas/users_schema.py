@@ -19,7 +19,7 @@ class UserRequestSchema:
             'name': fields.String(required=True, max_length=120),
             'last_name': fields.String(required=True, max_length=150),
             'username': fields.String(required=True, max_length=80),
-            'password': fields.String(required=True, max_length=255),
+            'password': fields.String(required=True, max_length=18),
             'email': fields.String(required=True, max_length=160),
             'rol_id': fields.Integer(required=True)
         })

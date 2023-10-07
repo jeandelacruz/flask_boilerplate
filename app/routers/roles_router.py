@@ -1,7 +1,6 @@
 from app import api
 from flask import request
 from flask_restx import Resource
-from http import HTTPStatus
 from app.controllers.roles_controller import RoleController
 from app.schemas.roles_schema import RoleRequestSchema
 
