@@ -1,6 +1,6 @@
 from app.models import BaseModel
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
-from bcrypt import hashpw, gensalt
+from bcrypt import hashpw, gensalt, checkpw
 
 
 class UserModel(BaseModel):
@@ -19,3 +19,9 @@ class UserModel(BaseModel):
         password_encode = self.password.encode('utf-8')
         password_hash = hashpw(password_encode, gensalt(rounds=10))
         self.password = password_hash.decode('utf-8')
+
+    def check_password(self, password):
+        return checkpw(
+            password.encode('utf-8'),
+            self.password.encode('utf-8')
+        )
