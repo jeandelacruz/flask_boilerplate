@@ -13,12 +13,22 @@ ENVIRONMENT = environment[FLASK_ENV]
 app = Flask(__name__)
 app.config.from_object(ENVIRONMENT)
 
+authorizations = {
+    # Authorization: Bearer {access_token}
+    'Bearer': {
+        'type': 'apiKey',
+        'in': 'header',
+        'name': 'Authorization'
+    }
+}
+
 api = Api(
     app,
     title='Boilerplate Flask',
     version='0.1',
     description='Endpoints del boilerplate',
-    doc='/swagger-ui'
+    doc='/swagger-ui',
+    authorizations=authorizations
 )
 
 db = SQLAlchemy(app)
