@@ -53,7 +53,7 @@
 ## PIP
 
 ```ssh
-pip install Flask Flask-Migrate flask-restx Flask-SQLAlchemy psycopg2-binary python-dotenv sqlalchemy-mixins autopep8 marshmallow-sqlalchemy bcrypt
+pip install Flask Flask-Migrate flask-restx Flask-SQLAlchemy psycopg2-binary python-dotenv sqlalchemy-mixins autopep8 marshmallow-sqlalchemy bcrypt flask-jwt-extended
 ```
 
 ## Enviroments
@@ -76,7 +76,11 @@ DATABASE_URL='postgresql://user:password@localhost:5432/name_database'
   - [Metodos optimos (adicionales)](https://github.com/absent1706/sqlalchemy-mixins/blob/master/README.md)
 - FlaskRestX
   - [Tipo de datos en validación](https://flask-restx.readthedocs.io/en/latest/_modules/flask_restx/fields.html)
+  - [Response](https://flask-restx.readthedocs.io/en/latest/marshalling.html)
+  - [Request Parser](https://flask-restx.readthedocs.io/en/latest/parsing.html)
   - [Swagger](https://flask-restx.readthedocs.io/en/latest/swagger.html)
+- FlaskJWTExtended
+  - [Protección de rutas]()
 
 ## Comandos
 

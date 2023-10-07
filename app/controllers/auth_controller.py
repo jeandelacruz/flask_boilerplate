@@ -1,5 +1,6 @@
 from app import db
 from app.models.users_model import UserModel
+from flask_jwt_extended import create_access_token
 from http import HTTPStatus
 
 
@@ -17,7 +18,12 @@ class AuthController:
                 # 2º Validar que la contraseña sea correcta
                 password = body['password']
                 if record.check_password(password):
-                    return {}
+                    # 3º Creación del JWT
+                    user_id = record.id
+                    access_token = create_access_token(identity=user_id)
+                    return {
+                        'access_token': access_token
+                    }, HTTPStatus.OK
                 return {
                     'message': 'La contraseña es incorrecta'
                 }, HTTPStatus.UNAUTHORIZED
