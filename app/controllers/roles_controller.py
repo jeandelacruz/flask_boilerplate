@@ -18,7 +18,8 @@ class RoleController:
 
     def save(self, body):
         try:
-            record_new = self.model.create(**body)
+            record_new = self.model.create(**body, commit=False)
+
             self.db.session.add(record_new)
             self.db.session.commit()
             return {

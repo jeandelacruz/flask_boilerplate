@@ -32,3 +32,12 @@ class TokenRefresh(Resource):
         identity = get_jwt_identity()
         controller = AuthController()
         return controller.refresh_token(identity)
+
+
+@auth_ns.route('/password/reset')
+class PasswordReset(Resource):
+    @auth_ns.expect(schema_request.reset(), validate=True)
+    def post(self):
+        ''' Generar nueva contraseña del usuario '''
+        controller = AuthController()
+        return controller.password_reset(request.json)

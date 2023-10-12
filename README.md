@@ -28,8 +28,8 @@
 ## Caracteristicas:
 
 1. Login
-   - [] Creación del token de acceso (JWT | access_token - refresh_token)
-   - [] Validación de contraseñas encriptadas (bcrypt)
+   - [x] Creación del token de acceso (JWT | access_token - refresh_token)
+   - [x] Validación de contraseñas encriptadas (bcrypt)
 2. Registro
    - [x] Encriptación de contraseña (bcrypt)
 3. Recuperar Contraseña
@@ -42,7 +42,7 @@
    - [x] Actualización de un registro
    - [x] Eliminar un registro (SoftDelete)
 5. Decoradores
-   - [] Proteger las rutas mediante autenticación
+   - [x] Proteger las rutas mediante autenticación
    - [] Proteger las rutas por rol
 6. Documentación y validaciones
    - [x] Swagger OpenAPI
@@ -53,7 +53,7 @@
 ## PIP
 
 ```ssh
-pip install Flask Flask-Migrate flask-restx Flask-SQLAlchemy psycopg2-binary python-dotenv sqlalchemy-mixins autopep8 marshmallow-sqlalchemy bcrypt flask-jwt-extended
+pip install Flask Flask-Migrate flask-restx Flask-SQLAlchemy psycopg2-binary python-dotenv sqlalchemy-mixins autopep8 marshmallow-sqlalchemy bcrypt flask-jwt-extended Flask-Mail
 ```
 
 ## Enviroments
@@ -66,6 +66,14 @@ FLASK_DEBUG=True
 FLASK_ENV=development
 
 DATABASE_URL='postgresql://user:password@localhost:5432/name_database'
+
+SECRET_KEY=''
+
+MAIL_SERVER='smtp.gmail.com'
+MAIL_PORT=587
+MAIL_USE_TLS=True
+MAIL_USERNAME='@gmail.com'
+MAIL_PASSWORD=''
 ```
 
 ## Documentación

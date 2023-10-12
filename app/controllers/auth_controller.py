@@ -1,7 +1,10 @@
-from app import db
+from os import getenv
+from app import db, mail
 from app.models.users_model import UserModel
 from flask_jwt_extended import create_access_token, create_refresh_token
 from http import HTTPStatus
+from secrets import token_hex
+from flask_mail import Message
 
 
 class AuthController:
@@ -50,3 +53,38 @@ class AuthController:
                 'message': 'Ocurrio un error',
                 'error': str(e)
             }, HTTPStatus.INTERNAL_SERVER_ERROR
+
+    def password_reset(self, body):
+        try:
+            email = body['email']
+            record = self.model.where(email=email, status=True).first()
+            if record:
+                new_password = token_hex(6)
+                record.password = new_password
+                record.hash_password()
+
+                self.db.session.add(record)
+                self.db.session.commit()
+
+                message = Message(
+                    subject=f'Reinicio de contraseña - {email}',
+                    sender=('Flask Boilerplate', getenv('MAIL_USERNAME')),
+                    recipients=[email],
+                    html=f'<p>Esta es tu nueva contraseña: <b>{new_password}</b></p>'
+                )
+                mail.send(message)
+
+                return {
+                    'message': 'Se envio un correo con la nueva contraseña'
+                }, HTTPStatus.OK
+            return {
+                'message': f'No se encontro un usuario con el correo: {email}'
+            }, HTTPStatus.NOT_FOUND
+        except Exception as e:
+            self.db.session.rollback()
+            return {
+                'message': 'Ocurrio un error',
+                'error': str(e)
+            }, HTTPStatus.INTERNAL_SERVER_ERROR
+        finally:
+            self.db.session.close()
