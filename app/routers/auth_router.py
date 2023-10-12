@@ -1,6 +1,7 @@
 from app import api
 from flask import request
 from flask_restx import Resource
+from flask_jwt_extended import jwt_required
 from app.schemas.auth_schema import AuthRequestSchema
 from app.controllers.auth_controller import AuthController
 
@@ -20,3 +21,11 @@ class SignIn(Resource):
         ''' Login de usuario '''
         controller = AuthController()
         return controller.sign_in(request.json)
+
+
+@auth_ns.route('/token/refresh')
+class TokenRefresh(Resource):
+    @jwt_required(refresh=True)
+    def post(self):
+        ''' Obtener un nuevo access_token si esta ha vencido '''
+        return {}
