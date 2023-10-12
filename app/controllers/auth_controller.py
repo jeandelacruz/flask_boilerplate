@@ -38,3 +38,15 @@ class AuthController:
                 'message': 'Ocurrio un error',
                 'error': str(e)
             }, HTTPStatus.INTERNAL_SERVER_ERROR
+
+    def refresh_token(self, identity):
+        try:
+            access_token = create_access_token(identity=identity)
+            return {
+                'access_token': access_token
+            }, HTTPStatus.OK
+        except Exception as e:
+            return {
+                'message': 'Ocurrio un error',
+                'error': str(e)
+            }, HTTPStatus.INTERNAL_SERVER_ERROR

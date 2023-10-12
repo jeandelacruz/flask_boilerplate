@@ -1,7 +1,7 @@
 from app import api
 from flask import request
 from flask_restx import Resource
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.schemas.auth_schema import AuthRequestSchema
 from app.controllers.auth_controller import AuthController
 
@@ -26,6 +26,9 @@ class SignIn(Resource):
 @auth_ns.route('/token/refresh')
 class TokenRefresh(Resource):
     @jwt_required(refresh=True)
+    @auth_ns.expect(schema_request.refresh(), validate=True)
     def post(self):
         ''' Obtener un nuevo access_token si esta ha vencido '''
-        return {}
+        identity = get_jwt_identity()
+        controller = AuthController()
+        return controller.refresh_token(identity)
