@@ -4,13 +4,14 @@ from app.models.users_model import UserModel
 from flask_jwt_extended import create_access_token, create_refresh_token
 from http import HTTPStatus
 from secrets import token_hex
-from flask_mail import Message
+from app.utils.mailing import Mailing
 
 
 class AuthController:
     def __init__(self):
         self.db = db
         self.model = UserModel
+        self.mailing = Mailing()
 
     def sign_in(self, body):
         try:
@@ -66,13 +67,9 @@ class AuthController:
                 self.db.session.add(record)
                 self.db.session.commit()
 
-                message = Message(
-                    subject=f'Reinicio de contraseña - {email}',
-                    sender=('Flask Boilerplate', getenv('MAIL_USERNAME')),
-                    recipients=[email],
-                    html=f'<p>Esta es tu nueva contraseña: <b>{new_password}</b></p>'
+                self.mailing.email_reset_password(
+                    email, record.name, new_password
                 )
-                mail.send(message)
 
                 return {
                     'message': 'Se envio un correo con la nueva contraseña'
