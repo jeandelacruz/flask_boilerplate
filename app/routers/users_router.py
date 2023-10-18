@@ -18,7 +18,7 @@ schema_request = UserRequestSchema(user_ns)
 @user_ns.route('')
 @user_ns.doc(security='Bearer')
 class Users(Resource):
-    @jwt_required()
+    # @jwt_required()
     @user_ns.expect(schema_request.all())
     def get(self):
         ''' Listar todos los usuarios '''

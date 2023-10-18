@@ -12,6 +12,7 @@ class UserRequestSchema:
         parser = RequestParser()
         parser.add_argument('page', type=int, default=1, location='args')
         parser.add_argument('per_page', type=int, default=5, location='args')
+        parser.add_argument('q', type=str, required=False, location='args')
         return parser
 
     def create(self):

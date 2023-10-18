@@ -1,14 +1,22 @@
 from app import db
+from app.controllers import BaseController
 from app.models.users_model import UserModel
 from app.schemas.users_schema import UserResponseSchema
+from sqlalchemy import or_
 from http import HTTPStatus
 
 
-class UserController:
+class UserController(BaseController):
     def __init__(self):
         self.db = db
         self.model = UserModel
         self.schema = UserResponseSchema
+        self.messages = {
+            'save': 'El usuario {username} se creo con exito',
+            'not_found': 'No se encontro un usuario con el ID: {id}',
+            'update': 'El usuario con el ID: {id} ha sido actualizado',
+            'remove': 'El usuario con el ID: {id} ha sido inhabilitado'
+        }
 
     def fetch_all(self, query_params):
         # Paginación
@@ -20,10 +28,23 @@ class UserController:
         # Pagina 2
         # SELECT * FROM users LIMIT 10 OFFSET 100
         try:
+            filters = {}
             page = query_params['page']
             per_page = query_params['per_page']
+            if query := query_params.get('q', None):
+                filters = {
+                    or_: {
+                        'username__ilike': f"%{query}%",
+                        'name__ilike': f"%{query}%",
+                        'last_name__ilike': f"%{query}%"
+                    }
+                }
 
-            records = self.model.where(status=True).order_by('id').paginate(
+            # Aqui vamos a realizar multiples filtros
+            # https://github.com/absent1706/sqlalchemy-mixins#all-in-one-smart_query
+            records = self.model.smart_query(
+                filters={**filters},
+            ).paginate(
                 page=page,
                 per_page=per_page
             )
@@ -53,7 +74,9 @@ class UserController:
             self.db.session.commit()
 
             return {
-                'message': f'El usuario {body["username"]} se creo con exito'
+                'message': self._format_placeholders(
+                    self.messages['save'], body
+                )
             }, HTTPStatus.CREATED
         except Exception as e:
             self.db.session.rollback()
@@ -64,62 +87,23 @@ class UserController:
         finally:
             self.db.session.close()
 
-    def find_by_id(self, id):
-        try:
-            record = self.model.where(id=id, status=True).first()
-
-            if record:
-                response = self.schema(many=False)
-                return response.dump(record), HTTPStatus.OK
-
-            return {
-                'message': f'No se encontro un usuario con el ID: {id}'
-            }, HTTPStatus.NOT_FOUND
-        except Exception as e:
-            return {
-                'message': 'Ocurrio un error',
-                'error': str(e)
-            }, HTTPStatus.INTERNAL_SERVER_ERROR
-
     def update(self, id, body):
         try:
-            record = self.model.where(id=id, status=True).first()
-
-            if record:
+            if record := self.model.where(id=id, status=True).first():
                 record.update(**body)
                 self.db.session.add(record)
                 self.db.session.commit()
 
-                return {
-                    'message': f'El usuario con el ID: {id} ha sido actualizado'
-                }, HTTPStatus.OK
-
+                message = self._format_placeholders(
+                    self.messages['update'], id
+                )
+                return self._extracted_from_transactional(
+                    record, message
+                )
             return {
-                'message': f'No se encontro un usuario con el ID: {id}'
-            }, HTTPStatus.NOT_FOUND
-        except Exception as e:
-            self.db.session.rollback()
-            return {
-                'message': 'Ocurrio un error',
-                'error': str(e)
-            }, HTTPStatus.INTERNAL_SERVER_ERROR
-        finally:
-            self.db.session.close()
-
-    def remove(self, id):
-        try:
-            record = self.model.where(id=id, status=True).first()
-
-            if record:
-                record.update(status=False)
-                self.db.session.add(record)
-                self.db.session.commit()
-                return {
-                    'message': f'El usuario con el ID: {id} ha sido inhabilitado'
-                }, HTTPStatus.OK
-
-            return {
-                'message': f'No se encontro un usuario con el ID: {id}'
+                'message': self._format_placeholders(
+                    self.messages['not_found'], id
+                )
             }, HTTPStatus.NOT_FOUND
         except Exception as e:
             self.db.session.rollback()

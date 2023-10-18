@@ -16,9 +16,9 @@ class AuthController:
     def sign_in(self, body):
         try:
             username = body['username']
-            # 1º Validar que exista el usuario y este activo
-            record = self.model.where(username=username, status=True).first()
-            if record:
+            # Operador Walrus
+            # https://ellibrodepython.com/operador-walrus
+            if record := self.model.where(username=username, status=True).first():
                 # 2º Validar que la contraseña sea correcta
                 password = body['password']
                 if record.check_password(password):
@@ -58,22 +58,8 @@ class AuthController:
     def password_reset(self, body):
         try:
             email = body['email']
-            record = self.model.where(email=email, status=True).first()
-            if record:
-                new_password = token_hex(6)
-                record.password = new_password
-                record.hash_password()
-
-                self.db.session.add(record)
-                self.db.session.commit()
-
-                self.mailing.email_reset_password(
-                    email, record.name, new_password
-                )
-
-                return {
-                    'message': 'Se envio un correo con la nueva contraseña'
-                }, HTTPStatus.OK
+            if record := self.model.where(email=email, status=True).first():
+                return self._extracted_from_password_reset(record, email)
             return {
                 'message': f'No se encontro un usuario con el correo: {email}'
             }, HTTPStatus.NOT_FOUND
@@ -85,3 +71,22 @@ class AuthController:
             }, HTTPStatus.INTERNAL_SERVER_ERROR
         finally:
             self.db.session.close()
+
+    # TODO Rename this here and in `password_reset`
+    # Cuando se tiene un codigo largo es mejor separar la logica de las validaciones
+    # ya que de esta manera podremos tener un codigo mas limpio
+    def _extracted_from_password_reset(self, record, email):
+        new_password = token_hex(6)
+        record.password = new_password
+        record.hash_password()
+
+        self.db.session.add(record)
+        self.db.session.commit()
+
+        self.mailing.email_reset_password(
+            email, record.name, new_password
+        )
+
+        return {
+            'message': 'Se envio un correo con la nueva contraseña'
+        }, HTTPStatus.OK

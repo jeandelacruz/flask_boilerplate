@@ -34,7 +34,7 @@
    - [x] Encriptación de contraseña (bcrypt)
 3. Recuperar Contraseña
    - [x] Generar una nueva contraseña encriptada
-   - [] Enviar un correo con un template (html)
+   - [x] Enviar un correo con un template (html)
 4. CRUD por cada Modelo
    - [x] Listado con paginación
    - [x] Obtener un registro mediante el id
@@ -43,12 +43,12 @@
    - [x] Eliminar un registro (SoftDelete)
 5. Decoradores
    - [x] Proteger las rutas mediante autenticación
-   - [] Proteger las rutas por rol
+   - [x] Proteger las rutas por rol
 6. Documentación y validaciones
    - [x] Swagger OpenAPI
    - [x] Schemas
 7. Despliegue
-   - [] Render
+   - [x] Render
 
 ## PIP
 
@@ -88,7 +88,9 @@ MAIL_PASSWORD=''
   - [Request Parser](https://flask-restx.readthedocs.io/en/latest/parsing.html)
   - [Swagger](https://flask-restx.readthedocs.io/en/latest/swagger.html)
 - FlaskJWTExtended
-  - [Protección de rutas]()
+  - [Protección de rutas](https://flask-jwt-extended.readthedocs.io/en/stable/optional_endpoints.html)
+- Operador Walrus
+  - [Documentación](https://ellibrodepython.com/operador-walrus)
 
 ## Comandos
 
